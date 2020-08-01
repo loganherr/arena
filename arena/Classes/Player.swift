@@ -16,6 +16,7 @@ class Player: SKSpriteNode {
 	var nextPosition: CGPoint
 	var actions: [Action]
 	let moveDistance: CGFloat
+	var currentDirection =  Direction.left
 	
 	init(type: Gladiator, moveDistance: CGFloat) {
 		self.type = type
@@ -41,6 +42,7 @@ class Player: SKSpriteNode {
 		let player = Player(type: type, moveDistance: moveDistance)
 		player.position = position
 		player.nextPosition = nextPosition
+		if let turn = player.face(currentDirection) { player.run(turn) }
 		player.run(SKAction.fadeAlpha(to: 0.7, duration: 0))
 		return player
 	}
@@ -58,22 +60,25 @@ class Player: SKSpriteNode {
 	}
 	
 	func move(direction: Direction) -> SKAction {
+		var actions: [SKAction] = []
 		nextPosition = direction.move(nextPosition, moveDistance)
-		
-		let move = SKAction.move(to: nextPosition, duration: 0.25)
-		let wait = SKAction.wait(forDuration: 0.25)
-		return SKAction.sequence([move, wait])
+		actions.append(SKAction.move(to: nextPosition, duration: 0.25))
+		actions.append(SKAction.wait(forDuration: 0.25))
+		return SKAction.sequence(actions)
 	}
 	
 	func attack(direction: Direction) -> SKAction {
-
-		let attack = SKAction.animate(with: attackAnimation, timePerFrame: 0.25)
-		return attack
+		var actions: [SKAction] = []
+		actions.append(SKAction.animate(with: attackAnimation, timePerFrame: 0.25))
+		return SKAction.sequence(actions)
 	}
 	
 	func shadowMove(direction: Direction) {
+		var actions: [SKAction] = []
+		if let turn = face(direction) { actions.append(turn) }
 		let newPoint = direction.move(self.position, moveDistance)
-		self.run(SKAction.move(to: newPoint, duration: 0.25))
+		actions.append(SKAction.move(to: newPoint, duration: 0.25))
+		self.run(SKAction.sequence(actions))
 	}
 	
 	func addAction(_ action: Action) {
@@ -87,6 +92,7 @@ class Player: SKSpriteNode {
 	func performActions() {
 		var skactions: [SKAction] = []
 		for action in actions {
+			if let turn = face(action.direction) { skactions.append(turn) }
 			switch action.type {
 			case .move:
 				skactions.append(move(direction: action.direction))
@@ -99,5 +105,25 @@ class Player: SKSpriteNode {
 			self.setPlayerActive(true)
 		})
 		actions.removeAll()
+	}
+	
+	func face(_ direction: Direction) -> SKAction? {
+		let turn: SKAction
+		let newDirection: Direction
+		switch direction {
+		case .left, .upleft, .downleft:
+			turn = SKAction.scaleX(to: 1, duration: 0)
+			newDirection = .left
+		case .right, .upright, .downright:
+			turn = SKAction.scaleX(to: -1, duration: 0)
+			newDirection = .right
+		default:
+			return nil
+		}
+		if newDirection != currentDirection {
+			currentDirection = newDirection
+			return turn
+		}
+		return nil
 	}
 }

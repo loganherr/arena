@@ -45,7 +45,9 @@ class GameScene: SKScene {
 		board.zPosition = -1
 		addChild(board)
 		addChild(player)
-		let moveButton = Button(defaultButtonImage: "move_card", activeButtonImage: "move_card_active", buttonAction: displayMoveButtons)
+		let moveButton = Button(defaultButtonImage: "move_card",
+								activeButtonImage: "move_card_active",
+								buttonAction: displayMoveButtons)
 		moveButton.position = CGPoint(x: view.frame.width / 4, y: view.frame.origin.y + 40)
 		let attackButton = Button(defaultButtonImage: "\(player.type)_attack_card", activeButtonImage: "\(player.type)_attack_card_active", buttonAction: displayAttackButtons)
 		attackButton.position = CGPoint(x: (view.frame.width / 4) * 2, y: view.frame.origin.y + 40)
@@ -64,7 +66,10 @@ class GameScene: SKScene {
 			}
 		}
 		for direction in Direction.allCases {
-			let button = DirectionalButton(direction: direction, defaultButtonImage: moveImage, activeButtonImage: moveImageActive, buttonAction: buttonAction(direction: direction))
+			let button = DirectionalButton(direction: direction,
+										   defaultButtonImage: moveImage,
+										   activeButtonImage: moveImageActive,
+										   buttonAction: buttonAction(direction: direction))
 			button.zRotation = button.direction.rotation()
 			moveButtons.append(button)
 		}
@@ -75,8 +80,8 @@ class GameScene: SKScene {
 	}
 	
 	func createAttackButtons() {
-		let defaultButtonImage = "\(player.type.rawValue)_attack_card"
-		let activeButtonImage = "\(player.type.rawValue)_attack_card_active"
+		let attackImage = "\(player.type.rawValue)_attack_card"
+		let attackImageActive = "\(player.type.rawValue)_attack_card_active"
 		func buttonAction(direction: Direction) -> () -> () {
 			return {
 				self.player.addAction(Action(.attack, direction))
@@ -85,7 +90,10 @@ class GameScene: SKScene {
 			}
 		}
 		for direction in Direction.allCases {
-			let button = DirectionalButton(direction: direction, defaultButtonImage: defaultButtonImage, activeButtonImage: activeButtonImage, buttonAction: buttonAction(direction: direction))
+			let button = DirectionalButton(direction: direction,
+										   defaultButtonImage: attackImage,
+										   activeButtonImage: attackImageActive,
+										   buttonAction: buttonAction(direction: direction))
 			button.zRotation = button.direction.rotation()
 			attackButtons.append(button)
 		}
@@ -107,8 +115,8 @@ class GameScene: SKScene {
 	
 	func displayButtons(_ buttons: [DirectionalButton]) {
 		for button in buttons {
-			let activePlayer = playerShadows.count > 0 ? playerShadows[playerShadows.count - 1] : player
-			let moveAction = SKAction.move(to: button.direction.move(activePlayer.position, player.moveDistance), duration: 0)
+			
+			let moveAction = SKAction.move(to: button.direction.move(activePlayer().position, player.moveDistance), duration: 0)
 			button.run(moveAction)
 			button.zPosition = 99
 			switch button.direction {
@@ -138,8 +146,7 @@ class GameScene: SKScene {
 	}
 	
 	func hideDownButton(_ button: Button) {
-		let activePlayer = playerShadows.count > 0 ? playerShadows[playerShadows.count - 1] : player
-		if activePlayer.position.y < bottomPosition.y {
+		if activePlayer().position.y < bottomPosition.y {
 			button.isHidden = true
 		} else {
 			button.isHidden = false
@@ -147,8 +154,7 @@ class GameScene: SKScene {
 	}
 	
 	func createShadow(direction: Direction) {
-		let shadowPlayer = playerShadows.count > 0 ? playerShadows[playerShadows.count - 1].copy() : player.copy()
-		shadowPlayer.position = playerShadows.count > 0 ? playerShadows[playerShadows.count - 1].position : player.position
+		let shadowPlayer: Player = activePlayer().copy()
 		shadowPlayer.setPlayerActive(true)
 		playerShadows.append(shadowPlayer)
 		addChild(shadowPlayer)
@@ -158,9 +164,13 @@ class GameScene: SKScene {
 	
 	func createAttackShadow(direction: Direction) {
 		let attackMark = SKSpriteNode(imageNamed: "attack_mark")
-		attackMark.position = playerShadows.count > 0 ? playerShadows[playerShadows.count - 1].position : player.position
+		attackMark.position = activePlayer().position
 		attackMarks.append(attackMark)
 		addChild(attackMark)
 		attackMark.run(SKAction.move(to: direction.move(attackMark.position, player.moveDistance), duration: 0.25))
+	}
+	
+	func activePlayer() -> Player {
+		return playerShadows.count > 0 ? playerShadows[playerShadows.count - 1] : player
 	}
 }
