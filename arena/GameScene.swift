@@ -10,6 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
 	let player: Player
+	var enemies: [Player]
 	var playerShadows: [Player]
 	var attackMarks: [SKSpriteNode]
 	let boardSize = 5
@@ -22,14 +23,17 @@ class GameScene: SKScene {
 	override init(size: CGSize) {
 		board = Board(size: size, gridSize: boardSize)
 		let moveDistance = board.boardTiles[0][0].frame.height
-		player = Player(type: .axe, moveDistance: moveDistance)
-		startPosition = board.boardTiles[2][2].position
+		player = Player(type: .knight, moveDistance: moveDistance)
+		startPosition = board.boardTiles[1][1].position
 		bottomPosition = board.boardTiles[0][boardSize - 1].position
 		player.setPlayerActive(true)
 		moveButtons = []
 		attackButtons = []
 		playerShadows = []
 		attackMarks = []
+		let enemy1 = Player(type: .knight, moveDistance: moveDistance)
+		enemy1.position = board.boardTiles[3][3].position
+		enemies = [enemy1]
 		super.init(size: size)
 		createMoveButtons()
 		createAttackButtons()
@@ -51,6 +55,10 @@ class GameScene: SKScene {
 		moveButton.position = CGPoint(x: view.frame.width / 4, y: view.frame.origin.y + 40)
 		let attackButton = Button(defaultButtonImage: "\(player.type)_attack_card", activeButtonImage: "\(player.type)_attack_card_active", buttonAction: displayAttackButtons)
 		attackButton.position = CGPoint(x: (view.frame.width / 4) * 2, y: view.frame.origin.y + 40)
+		for enemy in enemies {
+			enemy.setPlayerActive(true)
+			addChild(enemy)
+		}
 		addChild(moveButton)
 		addChild(attackButton)
 	}
