@@ -8,32 +8,32 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class LocalScene: SKScene {
 	let player: Player
-	var enemies: [Player]
 	var playerShadows: [Player]
 	var attackMarks: [SKSpriteNode]
 	let boardSize = 5
 	let board: Board
-	let startPosition: CGPoint
+	var startPositions: [CGPoint]
 	let bottomPosition: CGPoint
 	var moveButtons: [DirectionalButton]
 	var attackButtons: [DirectionalButton]
 	
+	convenience init(size: CGSize, players: Int) {
+		self.init(size: size)
+	}
+	
 	override init(size: CGSize) {
 		board = Board(size: size, gridSize: boardSize)
 		let moveDistance = board.boardTiles[0][0].frame.height
-		player = Player(type: .knight, moveDistance: moveDistance)
-		startPosition = board.boardTiles[1][1].position
+		player = Player(gladiator: .axe, moveDistance: moveDistance, type: .human)
+		startPositions = [board.boardTiles[1][1].position, board.boardTiles[1][3].position, board.boardTiles[3][1].position, board.boardTiles[3][3].position]
 		bottomPosition = board.boardTiles[0][boardSize - 1].position
 		player.setPlayerActive(true)
 		moveButtons = []
 		attackButtons = []
 		playerShadows = []
 		attackMarks = []
-		let enemy1 = Player(type: .knight, moveDistance: moveDistance)
-		enemy1.position = board.boardTiles[3][3].position
-		enemies = [enemy1]
 		super.init(size: size)
 		createMoveButtons()
 		createAttackButtons()
@@ -44,8 +44,8 @@ class GameScene: SKScene {
 	}
 	
 	override func didMove(to view: SKView) {
-		player.position = startPosition
-		player.nextPosition = startPosition
+		player.position = startPositions.removeFirst()
+		player.nextPosition = player.position
 		board.zPosition = -1
 		addChild(board)
 		addChild(player)
@@ -53,12 +53,8 @@ class GameScene: SKScene {
 								activeButtonImage: "move_card_active",
 								buttonAction: displayMoveButtons)
 		moveButton.position = CGPoint(x: view.frame.width / 4, y: view.frame.origin.y + 40)
-		let attackButton = Button(defaultButtonImage: "\(player.type)_attack_card", activeButtonImage: "\(player.type)_attack_card_active", buttonAction: displayAttackButtons)
+		let attackButton = Button(defaultButtonImage: "\(player.gladiator)_attack_card", activeButtonImage: "\(player.gladiator)_attack_card_active", buttonAction: displayAttackButtons)
 		attackButton.position = CGPoint(x: (view.frame.width / 4) * 2, y: view.frame.origin.y + 40)
-		for enemy in enemies {
-			enemy.setPlayerActive(true)
-			addChild(enemy)
-		}
 		addChild(moveButton)
 		addChild(attackButton)
 	}
@@ -88,8 +84,8 @@ class GameScene: SKScene {
 	}
 	
 	func createAttackButtons() {
-		let attackImage = "\(player.type.rawValue)_attack_card"
-		let attackImageActive = "\(player.type.rawValue)_attack_card_active"
+		let attackImage = "\(player.gladiator)_attack_card"
+		let attackImageActive = "\(player.gladiator)_attack_card_active"
 		func buttonAction(direction: Direction) -> () -> () {
 			return {
 				self.player.addAction(Action(.attack, direction))
@@ -167,7 +163,7 @@ class GameScene: SKScene {
 		playerShadows.append(shadowPlayer)
 		addChild(shadowPlayer)
 		shadowPlayer.run(SKAction.fadeAlpha(to: 0.6, duration: 0))
-		shadowPlayer.shadowMove(direction: direction)
+		shadowPlayer.move(direction: direction)
 	}
 	
 	func createAttackShadow(direction: Direction) {

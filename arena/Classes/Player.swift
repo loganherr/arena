@@ -9,7 +9,14 @@
 import SpriteKit
 
 class Player: SKSpriteNode {
-	var type: Gladiator
+	enum type {
+		case human
+		case bot
+		case shadow
+//		case remote
+	}
+	
+	var gladiator: Gladiator
 	let runKey: String
 	var spriteAnimation: [SKTexture]
 	var attackAnimation: [SKTexture]
@@ -17,29 +24,31 @@ class Player: SKSpriteNode {
 	var actions: [Action]
 	let moveDistance: CGFloat
 	var currentDirection =  Direction.left
+	let type: type
 	
-	init(type: Gladiator, moveDistance: CGFloat) {
-		self.type = type
-		runKey = "\(type)_active"
-		let texture = SKTexture(imageNamed: type.rawValue)
-		var atlas = SKTextureAtlas(named: "\(type)_idle")
+	init(gladiator: Gladiator, moveDistance: CGFloat, type: type) {
+		self.gladiator = gladiator
+		runKey = "\(gladiator)_active"
+		let texture = SKTexture(imageNamed: "\(gladiator)")
+		var atlas = SKTextureAtlas(named: "\(gladiator)_idle")
 		spriteAnimation = []
 		for i in 0...(atlas.textureNames.count - 1) {
-			spriteAnimation.append(atlas.textureNamed("\(type)_idle_\(i)"))
+			spriteAnimation.append(atlas.textureNamed("\(gladiator)_idle_\(i)"))
 		}
-		atlas = SKTextureAtlas(named: "\(type)_attack")
+		atlas = SKTextureAtlas(named: "\(gladiator)_attack")
 		attackAnimation = []
 		for i in 0...(atlas.textureNames.count - 1) {
-			attackAnimation.append(atlas.textureNamed("\(type)_attack_\(i)"))
+			attackAnimation.append(atlas.textureNamed("\(gladiator)_attack_\(i)"))
 		}
 		nextPosition = CGPoint()
 		self.moveDistance = moveDistance
 		actions = []
+		self.type = type
 		super.init(texture: texture, color: .clear, size: texture.size())
 	}
 	
 	func copy() -> Player {
-		let player = Player(type: type, moveDistance: moveDistance)
+		let player = Player(gladiator: gladiator, moveDistance: moveDistance, type: .shadow)
 		player.position = position
 		player.nextPosition = nextPosition
 		if let turn = player.face(currentDirection) { player.run(turn) }
@@ -59,7 +68,7 @@ class Player: SKSpriteNode {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func move(direction: Direction) -> SKAction {
+	func moveAction(direction: Direction) -> SKAction {
 		var actions: [SKAction] = []
 		nextPosition = direction.move(nextPosition, moveDistance)
 		actions.append(SKAction.move(to: nextPosition, duration: 0.25))
@@ -67,13 +76,13 @@ class Player: SKSpriteNode {
 		return SKAction.sequence(actions)
 	}
 	
-	func attack(direction: Direction) -> SKAction {
+	func attackAction(direction: Direction) -> SKAction {
 		var actions: [SKAction] = []
 		actions.append(SKAction.animate(with: attackAnimation, timePerFrame: 0.25))
 		return SKAction.sequence(actions)
 	}
 	
-	func shadowMove(direction: Direction) {
+	func move(direction: Direction) {
 		var actions: [SKAction] = []
 		if let turn = face(direction) { actions.append(turn) }
 		let newPoint = direction.move(self.position, moveDistance)
@@ -95,9 +104,9 @@ class Player: SKSpriteNode {
 			if let turn = face(action.direction) { skactions.append(turn) }
 			switch action.type {
 			case .move:
-				skactions.append(move(direction: action.direction))
+				skactions.append(moveAction(direction: action.direction))
 			case .attack:
-				skactions.append(attack(direction: action.direction))
+				skactions.append(attackAction(direction: action.direction))
 			}
 		}
 		let sequence = SKAction.sequence(skactions)

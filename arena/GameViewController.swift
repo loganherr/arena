@@ -11,7 +11,7 @@ import SpriteKit
 class GameViewController: UIViewController {
 
 	override func viewDidAppear(_ animated: Bool) {
-		let scene = GameScene(size: view.safeAreaLayoutGuide.layoutFrame.size)
+		let scene = MenuScene(size: view.safeAreaLayoutGuide.layoutFrame.size)
 		let skView = view as! SKView
 		skView.frame = view.safeAreaLayoutGuide.layoutFrame
 		scene.scaleMode = .aspectFill
