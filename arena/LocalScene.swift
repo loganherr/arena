@@ -19,10 +19,6 @@ class LocalScene: SKScene {
 	var moveButtons: [DirectionalButton]
 	var attackButtons: [DirectionalButton]
 	
-	convenience init(size: CGSize, players: Int) {
-		self.init(size: size)
-	}
-	
 	override init(size: CGSize) {
 		board = Board(size: size, gridSize: boardSize)
 		let moveDistance = board.boardTiles[0][0].frame.height

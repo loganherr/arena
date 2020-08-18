@@ -34,6 +34,7 @@
 		0207F06924BE9341005899ED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0207F07124BE9B47005899ED /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		0225715B24EAE1DC005702A9 /* LocalScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalScene.swift; sourceTree = "<group>"; };
+		025A870B24EC54CE002BC1AF /* arena.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = arena.entitlements; sourceTree = "<group>"; };
 		0284FFD024C24111007BB0D8 /* Gladiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gladiator.swift; sourceTree = "<group>"; };
 		029B85B924CF6A9800916E8C /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		02B7899B24C89F01007E4905 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		0207F05624BE9340005899ED /* arena */ = {
 			isa = PBXGroup;
 			children = (
+				025A870B24EC54CE002BC1AF /* arena.entitlements */,
 				0207F05724BE9340005899ED /* AppDelegate.swift */,
 				0207F05D24BE9340005899ED /* MenuScene.swift */,
 				0225715B24EAE1DC005702A9 /* LocalScene.swift */,
@@ -332,6 +334,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = arena/arena.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = arena/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -340,6 +343,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sleepyslothdevelopment.arena;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -349,6 +353,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = arena/arena.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = arena/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -357,6 +362,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sleepyslothdevelopment.arena;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
