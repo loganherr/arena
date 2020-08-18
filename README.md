@@ -19,7 +19,7 @@ Each player is randomly assigned a gladiator and their corresponding deck of act
 This cycle of selecting and performing actions will continue until there is one player left standing. When a player is attacked 3 times, they die.
 
 
-## In Development
+## In Active Development
 
 * implement turns for players (local play)
   * select number of players
