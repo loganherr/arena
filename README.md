@@ -10,11 +10,11 @@ ARENA is a mix of deck-based, turn-based, RTS. Players selects 3 actions to take
 
 Each player is randomly assigned a gladiator and their corresponding deck of actions.
 
-### Current animated gladiators:
+**CURRENT ANIMATED GLADIATORS:**
 
 ![axe player](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/axe.imageset/axe.png) ![knight player](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/knight.imageset/knight.png)
 
-**SELECT AN ACTION**: For every turn, each player will have 4 actions to choose from. Actions include movement, attack, or varying special moves/attacks. The player will select 3 actions to take, in sequential order, and select the direction to take each said action.
+**SELECT ACTIONS**: For every turn, each player will have 4 actions to choose from. Actions include movement, attack, or varying special moves/attacks. The player will select 3 actions to take, in sequential order, and select the direction to take each said action.
 
 **PERFORM ACTIONS**: Once all players have selected their actions, all actions will be carried out in order (every player's first action, then each player's second action...). Priority of actions: Move > Attack. So if a player moves out of a space a player attacks within the same sequential action, the attack misses. If the player moves into the attacked space, they are hit.
 
