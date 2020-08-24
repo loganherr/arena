@@ -20,7 +20,7 @@ class Player: SKSpriteNode {
 	let runKey: String
 	var spriteAnimation: [SKTexture]
 	var attackAnimation: [SKTexture]
-	var nextPosition: CGPoint
+//	var nextPosition: CGPoint
 	var actions: [Action]
 	let moveDistance: CGFloat
 	var currentDirection =  Direction.left
@@ -40,7 +40,7 @@ class Player: SKSpriteNode {
 		for i in 0...(atlas.textureNames.count - 1) {
 			attackAnimation.append(atlas.textureNamed("\(gladiator)_attack_\(i)"))
 		}
-		nextPosition = CGPoint()
+//		nextPosition = CGPoint()
 		self.moveDistance = moveDistance
 		actions = []
 		self.type = type
@@ -50,7 +50,7 @@ class Player: SKSpriteNode {
 	func copy() -> Player {
 		let player = Player(gladiator: gladiator, moveDistance: moveDistance, type: .shadow)
 		player.position = position
-		player.nextPosition = nextPosition
+//		player.nextPosition = nextPosition
 		if let turn = player.face(currentDirection) { player.run(turn) }
 		player.run(SKAction.fadeAlpha(to: 0.7, duration: 0))
 		return player
@@ -68,18 +68,18 @@ class Player: SKSpriteNode {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func moveAction(direction: Direction) -> SKAction {
-		var actions: [SKAction] = []
-		nextPosition = direction.move(nextPosition, moveDistance)
-		actions.append(SKAction.move(to: nextPosition, duration: 0.25))
-		actions.append(SKAction.wait(forDuration: 0.25))
-		return SKAction.sequence(actions)
-	}
+//	func moveAction(direction: Direction) -> SKAction {
+//		var actions: [SKAction] = []
+//		let nextPosition = direction.move(self.position, moveDistance)
+//		actions.append(SKAction.move(to: nextPosition, duration: 0.25))
+//		actions.append(SKAction.wait(forDuration: 0.25))
+//		return SKAction.sequence(actions)
+//	}
 	
-	func attackAction(direction: Direction) -> SKAction {
+	func attack(direction: Direction) {
 		var actions: [SKAction] = []
 		actions.append(SKAction.animate(with: attackAnimation, timePerFrame: 0.25))
-		return SKAction.sequence(actions)
+		self.run(SKAction.sequence(actions))
 	}
 	
 	func move(direction: Direction) {
@@ -92,27 +92,27 @@ class Player: SKSpriteNode {
 	
 	func addAction(_ action: Action) {
 		actions.append(action)
-		self.setPlayerActive(false)
-		if actions.count == MAX_ACTIONS {
-			performActions()
-		}
+//		self.setPlayerActive(false)
+//		if actions.count == MAX_ACTIONS {
+//			performActions()
+//		}
 	}
 	
-	func performActions() {
-		var skactions: [SKAction] = []
-		for action in actions {
-			if let turn = face(action.direction) { skactions.append(turn) }
-			switch action.type {
-			case .move:
-				skactions.append(moveAction(direction: action.direction))
-			case .attack:
-				skactions.append(attackAction(direction: action.direction))
-			}
-		}
-		let sequence = SKAction.sequence(skactions)
-		self.run(sequence, completion: {
-			self.setPlayerActive(true)
-		})
+	func clearActions() {
+//		var skactions: [SKAction] = []
+//		for action in actions {
+//			if let turn = face(action.direction) { skactions.append(turn) }
+//			switch action.type {
+//			case .move:
+//				skactions.append(moveAction(direction: action.direction))
+//			case .attack:
+//				skactions.append(attackAction(direction: action.direction))
+//			}
+//		}
+//		let sequence = SKAction.sequence(skactions)
+//		self.run(sequence, completion: {
+//			self.setPlayerActive(true)
+//		})
 		actions.removeAll()
 	}
 	

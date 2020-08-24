@@ -6,10 +6,14 @@
 //  Copyright © 2020 Logan. All rights reserved.
 //
 
-enum Gladiator: String {
-	case archer = "archer"
-	case spearman = "spear"
-	case swordsman = "sword"
+enum Gladiator: String, CaseIterable {
+//	case archer = "archer"
+//	case spearman = "spear"
+//	case swordsman = "sword"
 	case axe = "axe"
 	case knight = "knight"
+	
+	static func random(_ gladiators: [Gladiator]) -> Gladiator {
+		return gladiators.randomElement()!
+	}
 }
