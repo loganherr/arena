@@ -97,7 +97,7 @@ class LocalScene: SKScene {
 				for node in self.children {
 					node.run(SKAction.move(to: CGPoint(x: node.position.x, y: -40), duration: 0.25))
 				}
-				self.removeAllChildren()
+				 
 				self.startGame(i)
 			})
 			button.position = CGPoint(x: view.frame.width / 2.0, y: (view.frame.height / 5.0) * (5.0 - CGFloat(i)))

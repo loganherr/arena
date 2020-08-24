@@ -40,3 +40,5 @@ This cycle of selecting and performing actions will continue until there is one 
   * rematch with same player numbers (new random gladiators and same gladiators)
 * implement multiplayer across devices
   * online play? peer-to-peer vs. game servers?
+* cross-platform
+  * MAC OS, Android(?), PC(?)
