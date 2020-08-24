@@ -95,10 +95,14 @@ class LocalScene: SKScene {
 		for i in 1...4 {
 			let button = Button(defaultButtonImage: "\(i)P", activeButtonImage: "\(i)P_active", buttonAction: {
 				for node in self.children {
-					node.run(SKAction.move(to: CGPoint(x: node.position.x, y: -40), duration: 0.25))
+					node.run(SKAction.move(to: CGPoint(x: node.position.x, y: -80), duration: 0.25)) {
+						node.removeFromParent()
+						if (self.children.count == 0) {
+							self.startGame(i)
+						}
+					}
 				}
-				 
-				self.startGame(i)
+				
 			})
 			button.position = CGPoint(x: view.frame.width / 2.0, y: (view.frame.height / 5.0) * (5.0 - CGFloat(i)))
 			addChild(button)
