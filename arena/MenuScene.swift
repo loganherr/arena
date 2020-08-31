@@ -16,6 +16,7 @@ class MenuScene: SKScene {
 		for i in 0...(titleAtlas.textureNames.count - 1) {
 			titleAnimation.append(titleAtlas.textureNamed("arena_\(i)"))
 		}
+		titleAnimation.append(titleAtlas.textureNamed("arena_0"))
 		let title = SKSpriteNode(texture: titleAnimation[0])
 		title.position = CGPoint(x: view.center.x, y: view.center.y + 100)
 		let localButton = Button(defaultButtonImage: "local", activeButtonImage: "local_active", buttonAction: startLocalMultiplayer)
@@ -26,7 +27,9 @@ class MenuScene: SKScene {
 		addChild(title)
 		addChild(localButton)
 		addChild(onlineButton)
-		title.run(SKAction.repeatForever(SKAction.animate(with: titleAnimation, timePerFrame: 0.1)))
+		let wave = SKAction.animate(with: titleAnimation, timePerFrame: 0.15)
+		let wait = SKAction.wait(forDuration: 0.5)
+		title.run(SKAction.repeatForever(SKAction.sequence([wave, wait])))
 	}
 	
 	func startLocalMultiplayer() {
