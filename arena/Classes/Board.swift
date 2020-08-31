@@ -10,12 +10,12 @@ import SpriteKit
 
 class Board: SKNode {
 	
-	var boardTiles: [[SKSpriteNode]] = []
+	var tiles: [[SKSpriteNode]] = []
 	
 	init(size: CGSize, gridSize: Int) {
 		super.init()
 		for i in 0 ..< gridSize {
-			boardTiles.append([])
+			tiles.append([])
 			for j in 0 ..< gridSize {
 				let boardTile = SKSpriteNode(imageNamed: "floor_tile")
 				boardTile.size = CGSize(width: size.width / CGFloat(gridSize),
@@ -25,7 +25,7 @@ class Board: SKNode {
 				boardTile.position = CGPoint(x: xPosition,
 											 y: yPosition)
 				boardTile.zPosition = -1
-				boardTiles[i].append(boardTile)
+				tiles[i].append(boardTile)
 				addChild(boardTile)
 			}
 		}
@@ -36,6 +36,6 @@ class Board: SKNode {
 	}
 	
 //	func getBoardTilePosition(point: CGPoint) -> CGPoint {
-//		return boardTiles[Int(point.x)][Int(point.y)].position
+//		return tiles[Int(point.x)][Int(point.y)].position
 //	}
 }

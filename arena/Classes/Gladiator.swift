@@ -7,7 +7,7 @@
 //
 
 enum Gladiator: String, CaseIterable {
-//	case archer = "archer"
+	case archer = "archer"
 //	case spearman = "spear"
 //	case swordsman = "sword"
 	case axe = "axe"
