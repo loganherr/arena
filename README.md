@@ -24,9 +24,10 @@ This cycle of selecting and performing actions will continue until there is one 
 ## In Active Development
 
 * implement turns for players (local play)
-  * select number of players
-  * player action selection turn handling
-  * implement synchronous action sequence
+  * ~~select number of players
+  * ~~player action selection turn handling
+  * currently race condition when adding animations for attack responses
+  * add a button for turn begin to split up the turns. allows players to pass the phone to the next player without showing/seeing what previous/next player's actions are.
 
 ## To Do
 
