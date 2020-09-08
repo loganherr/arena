@@ -28,7 +28,6 @@ This cycle of selecting and performing actions will continue until there is one 
   * ~~player action selection turn handling~~
   * currently race condition when adding animations for attack responses
   * add a button for turn begin to split up the turns. allows players to pass the phone to the next player without showing/seeing what previous/next player's actions are.
-* add assets for players being hit/dying
 * ~~implement successful attack detection~~
 * implement player health management
 * ~~implement player action decks~~
@@ -36,7 +35,32 @@ This cycle of selecting and performing actions will continue until there is one 
 * add special action for various characters
   * special action assets
   * special action handling
-* create graphic assets and animations for other character types
+* create assets for animations of character types
+  * archer
+    * ~~idle~~
+    * ~~attack~~
+    * attacked
+    * die
+  * axe
+    * ~~idle~~
+    * ~~attack~~
+    * attacked
+    * die
+  * knight
+    * ~~idle~~
+    * ~~attack~~
+    * attacked
+    * die
+  * spear
+    * idle
+    * attack
+    * attacked
+    * die
+  * swords
+    * idle
+    * attack
+    * attacked
+    * die
 * implement in-game menu
   * exit/surrender from a game
   * rematch with same player numbers (new random gladiators and same gladiators)
