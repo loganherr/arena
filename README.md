@@ -31,10 +31,13 @@ This cycle of selecting and performing actions will continue until there is one 
 
 ## To Do
 
-* implement successful attack detection
+* ~~implement successful attack detection~~
 * implement player health management
-* implement player action decks
-  * number of attack and movement actions determined in physical version
+* ~~implement player action decks~~
+  * ~~number of attack and movement actions determined in physical version~~
+* add special action for various characters
+  * special action assets
+  * special action handling
 * create graphic assets and animations for other character types
 * implement in-game menu
   * exit/surrender from a game
