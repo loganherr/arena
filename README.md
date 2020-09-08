@@ -16,7 +16,7 @@ Each player is randomly assigned a gladiator and their corresponding deck of act
 
 **SELECT ACTIONS**: For every turn, each player will have 4 actions to choose from. Actions include movement, attack, or varying special moves/attacks. The player will select 3 actions to take, in sequential order, and select the direction to take each said action.
 
-**PERFORM ACTIONS**: Once all players have selected their actions, all actions will be carried out in order (every player's first action, then each player's second action...). Priority of actions: Move > Attack. So if a player moves out of a space a player attacks within the same sequential action, the attack misses. If the player moves into the attacked space, they are hit.
+**PERFORM ACTIONS**: Once all players have selected their actions, all actions will be carried out in order (each player's first action, then each player's second action...). Priority of actions: Move > Attack. So if a player moves out of a space a player attacks within the same sequential action, the attack misses. If the player moves into the attacked space, they are hit.
 
 This cycle of selecting and performing actions will continue until there is one player left standing. When a player is attacked 3 times, they die.
 
