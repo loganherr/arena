@@ -22,7 +22,7 @@ struct Action {
 enum ActionType {
 	case move
 	case attack
-	case dodge
-	case attacked
-	case die
+//	case dodge
+//	case attacked
+//	case die
 }

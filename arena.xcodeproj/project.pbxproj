@@ -19,6 +19,7 @@
 		029B85BA24CF6A9800916E8C /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B85B924CF6A9800916E8C /* Action.swift */; };
 		02B7899C24C89F01007E4905 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B7899B24C89F01007E4905 /* Direction.swift */; };
 		02B789A124C9FF0A007E4905 /* DirectionalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B789A024C9FF0A007E4905 /* DirectionalButton.swift */; };
+		02C0A7E325073119004A7155 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C0A7E225073119004A7155 /* Reaction.swift */; };
 		02DA400D24BF63F0001C55D9 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DA400C24BF63F0001C55D9 /* Button.swift */; };
 		02DA401324BF6995001C55D9 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DA401224BF6995001C55D9 /* Board.swift */; };
 /* End PBXBuildFile section */
@@ -39,6 +40,7 @@
 		029B85B924CF6A9800916E8C /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		02B7899B24C89F01007E4905 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		02B789A024C9FF0A007E4905 /* DirectionalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalButton.swift; sourceTree = "<group>"; };
+		02C0A7E225073119004A7155 /* Reaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
 		02DA400C24BF63F0001C55D9 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		02DA401224BF6995001C55D9 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +98,7 @@
 				02B7899B24C89F01007E4905 /* Direction.swift */,
 				0284FFD024C24111007BB0D8 /* Gladiator.swift */,
 				0207F07124BE9B47005899ED /* Player.swift */,
+				02C0A7E225073119004A7155 /* Reaction.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				0207F06024BE9340005899ED /* GameViewController.swift in Sources */,
 				0284FFD124C24111007BB0D8 /* Gladiator.swift in Sources */,
 				0225715C24EAE1DC005702A9 /* LocalScene.swift in Sources */,
+				02C0A7E325073119004A7155 /* Reaction.swift in Sources */,
 				0207F05824BE9340005899ED /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

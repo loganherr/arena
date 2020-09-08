@@ -133,6 +133,7 @@ class LocalScene: SKScene {
 			// all players have gone, perform the actions
 			applyActions()
 			turn = 0
+			clearForNextTurn()
 			takeTurn()
 			// then reset turn counter and start turns again
 		} else if activePlayer.actions.count == MAX_ACTIONS {
@@ -190,10 +191,10 @@ class LocalScene: SKScene {
 					print(players.filter { $0.gladiator == atkdPlayer.gladiator }[0].gladiator)
 					if atkdPlayer.position == atkPosition {
 						// add attacked action to player
-						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].actions.insert(Action(.attacked, player.actions[i].direction), at: i * 2 + 1)
+						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(Reaction(.attacked))//(Action(.attacked, player.actions[i].direction), at: i * 2 + 1)
 					} else {
 						// add dodge action to player
-						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].actions.insert(Action(.dodge, player.actions[i].direction), at: i * 2 + 1)
+						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(Reaction(.dodge))//.actions.insert(Action(.dodge, player.actions[i].direction), at: i * 2 + 1)
 					}
 				}
 			}
@@ -201,6 +202,7 @@ class LocalScene: SKScene {
 		for player in players {
 			player.run(player.animations())
 			player.clearActions()
+			player.clearReactions()
 		}
 	}
 	
@@ -209,7 +211,7 @@ class LocalScene: SKScene {
 			button.isHidden = true
 			button.removeFromParent()
 		}
-		actionButtons = []
+		actionButtons.removeAll()
 	}
 	
 	func displayButtons(_ buttons: [DirectionalButton]) {

@@ -25,10 +25,10 @@ class Player: SKSpriteNode {
 	var spriteAnimation: [SKTexture]
 	var attackAnimation: [SKTexture]
 	var actions: [Action]
+	var reactions: [Reaction] = []
 	private var actionDeck: [ActionType] = []
 	let moveDistance: CGFloat
 	var currentDirection =  Direction.left
-	var moveLocations: [CGPoint] = []
 	var health = 3
 	let type: type
 	
@@ -92,36 +92,49 @@ class Player: SKSpriteNode {
 	}
 	
 	func animations() -> SKAction {
-		var actions: [SKAction] = []
+		var animations: [SKAction] = []
 		var point = self.position
-		for action in self.actions {
+		for i in 0..<self.actions.count {
 			var group: [SKAction] = []
-			if let turn = face(action.direction) { group.append(turn) }
+			if let turn = face(actions[i].direction) { group.append(turn) }
 			group.append(SKAction.wait(forDuration: ANIMATION_DURATION))
-			switch action.type {
+			switch actions[i].type {
 			case .move:
-				point = action.direction.move(point, self.moveDistance)
+				point = actions[i].direction.move(point, self.moveDistance)
 				group.append(SKAction.move(to: point, duration: FRAME_DURATION))
 			case .attack:
 				group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION))
-			case .attacked:
-				group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION / 4))
-			default:
-				break
+//			case .attacked:
+//				group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION / 4))
+//			default:
+//				break
 			}
-			actions.append(SKAction.group(group))
+			if reactions.count > 0 {
+				switch reactions[i].type {
+				case .attacked:
+					group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION / 4))
+				default:
+					break
+				}
+			}
+			animations.append(SKAction.group(group))
 		}
-		return SKAction.sequence(actions)
+		return SKAction.sequence(animations)
 	}
 	
-	func addAction(_ action: Action) {
-		actions.append(action)
+	func addAction(_ action: Action) { actions.append(action) }
+	
+	func clearActions() { actions.removeAll() }
+	
+	func addReaction(_ reaction: Reaction) {
+		if actions.count > reactions.count { reactions.append(reaction) }
+		else if (reactions.last?.type == .dodge && reaction.type == .attacked) {
+			reactions.removeLast()
+			reactions.append(reaction)
+		}
 	}
 	
-	func clearActions() {
-		actions.removeAll()
-		moveLocations.removeAll()
-	}
+	func clearReactions() { reactions.removeAll() }
 	
 	func face(_ direction: Direction) -> SKAction? {
 		let turn: SKAction
