@@ -21,16 +21,14 @@ Each player is randomly assigned a gladiator and their corresponding deck of act
 This cycle of selecting and performing actions will continue until there is one player left standing. When a player is attacked 3 times, they die.
 
 
-## In Active Development
+## To Do
 
 * implement turns for players (local play)
   * ~~select number of players~~
   * ~~player action selection turn handling~~
   * currently race condition when adding animations for attack responses
   * add a button for turn begin to split up the turns. allows players to pass the phone to the next player without showing/seeing what previous/next player's actions are.
-
-## To Do
-
+* add assets for players being hit/dying
 * ~~implement successful attack detection~~
 * implement player health management
 * ~~implement player action decks~~
