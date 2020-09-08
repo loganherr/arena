@@ -1,6 +1,6 @@
 ![# ARENA](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/title.spriteatlas/arena_0.imageset/arena_0.png)
 
-Welcome to ARENA! Think three moves ahead to outsmart, outmaneuver, and outlive the competition to be the last standing gladiator.
+Welcome to ARENA! Think three moves ahead to outsmart, outmaneuver, and outlive the competition to be the last gladiator standing.
 
 ARENA is a mix of deck-based, turn-based, RTS. Players selects 3 actions to take from a set hand of actions. Each player's then actions simultaneously take place, moving around the board and attacking those who come within range.
 
@@ -21,19 +21,21 @@ Each player is randomly assigned a gladiator and their corresponding deck of act
 This cycle of selecting and performing actions will continue until there is one player left standing. When a player is attacked 3 times, they die.
 
 
-## In Active Development
-
-* implement turns for players (local play)
-  * select number of players
-  * player action selection turn handling
-  * implement synchronous action sequence
-
 ## To Do
 
-* implement successful attack detection
+* implement turns for players (local play)
+  * ~~select number of players~~
+  * ~~player action selection turn handling~~
+  * currently race condition when adding animations for attack responses
+  * add a button for turn begin to split up the turns. allows players to pass the phone to the next player without showing/seeing what previous/next player's actions are.
+* add assets for players being hit/dying
+* ~~implement successful attack detection~~
 * implement player health management
-* implement player action decks
-  * number of attack and movement actions determined in physical version
+* ~~implement player action decks~~
+  * ~~number of attack and movement actions determined in physical version~~
+* add special action for various characters
+  * special action assets
+  * special action handling
 * create graphic assets and animations for other character types
 * implement in-game menu
   * exit/surrender from a game
