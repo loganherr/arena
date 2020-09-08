@@ -49,6 +49,8 @@ class Player: SKSpriteNode {
 		actions = []
 		self.type = type
 		super.init(texture: spriteAnimation[0], color: .clear, size: spriteAnimation[0].size())
+		self.xScale = 1.1
+		self.yScale = 1.1
 	}
 	
 	func resetDeck() {
@@ -89,15 +91,6 @@ class Player: SKSpriteNode {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func attackAnimation(direction: Direction) -> SKAction {
-		var actions: [SKAction] = []
-		if let turn = face(direction) { actions.append(turn) }
-		let attack = SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION)
-		actions.append(attack)
-		actions.append(SKAction.wait(forDuration: ANIMATION_DURATION))
-		return SKAction.group(actions)
-	}
-	
 	func animations() -> SKAction {
 		var actions: [SKAction] = []
 		var point = self.position
@@ -111,6 +104,10 @@ class Player: SKSpriteNode {
 				group.append(SKAction.move(to: point, duration: FRAME_DURATION))
 			case .attack:
 				group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION))
+			case .attacked:
+				group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION / 4))
+			default:
+				break
 			}
 			actions.append(SKAction.group(group))
 		}

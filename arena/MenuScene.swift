@@ -27,9 +27,11 @@ class MenuScene: SKScene {
 		addChild(title)
 		addChild(localButton)
 		addChild(onlineButton)
-		let wave = SKAction.animate(with: titleAnimation, timePerFrame: 0.15)
+		let waveMid = titleAnimation.count / 2
+		let wave1 = SKAction.animate(with: Array(titleAnimation[...waveMid]), timePerFrame: 0.15)
 		let wait = SKAction.wait(forDuration: 0.5)
-		title.run(SKAction.repeatForever(SKAction.sequence([wave, wait])))
+		let wave2 = SKAction.animate(with: Array(titleAnimation[waveMid...]), timePerFrame: 0.15)
+		title.run(SKAction.repeatForever(SKAction.sequence([wave1, wait, wave2, wait])))
 	}
 	
 	func startLocalMultiplayer() {

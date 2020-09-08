@@ -131,15 +131,7 @@ class LocalScene: SKScene {
 	func takeTurn() {
 		if turn == players.count {
 			// all players have gone, perform the actions
-			func animationLoop() {
-				for player in players {
-					player.run(player.animations())
-				}
-			}
-			animationLoop()
-			for player in players {
-				player.clearActions()
-			}
+			applyActions()
 			turn = 0
 			takeTurn()
 			// then reset turn counter and start turns again
@@ -154,25 +146,61 @@ class LocalScene: SKScene {
 			(0..<PLAYER_HAND_SIZE).forEach { (i) in
 				switch activePlayer.getActionFromDeck() {
 				case .move:
-					let button = Button(defaultButtonImage: "move_card", activeButtonImage: "move_card_active", buttonAction: {
+					let mbutton = Button(defaultButtonImage: "move_card", activeButtonImage: "move_card_active", buttonAction: {
 						self.hideButtons(self.attackButtons)
 						self.displayButtons(self.moveButtons)
 					})
-					button.position = CGPoint(x: self.board.tiles[i][4].position.x + (self.board.tiles[i][4].frame.width / 2),
-											  y: self.board.tiles[i][4].frame.origin.y - (self.board.tiles[i][4].frame.height) - 40)
-					actionButtons.append(button)
-					self.addChild(button)
+					mbutton.position = CGPoint(x: self.board.tiles[i][4].position.x + (self.board.tiles[i][4].frame.width / 2),
+											  y: self.board.tiles[i][4].frame.origin.y - self.board.tiles[i][4].frame.height)
+					actionButtons.append(mbutton)
+					self.addChild(mbutton)
 				case .attack:
-					let button = Button(defaultButtonImage: "attack_card", activeButtonImage: "attack_card_active", buttonAction: {
+					let abutton = Button(defaultButtonImage: "attack_card", activeButtonImage: "attack_card_active", buttonAction: {
 						self.hideButtons(self.moveButtons)
 						self.displayButtons(self.attackButtons)
 					})
-					button.position = CGPoint(x: self.board.tiles[i][4].position.x + (self.board.tiles[i][4].frame.width / 2),
-											  y: self.board.tiles[i][4].frame.origin.y - (self.board.tiles[i][4].frame.height / 2) - 40)
-					actionButtons.append(button)
-					self.addChild(button)
+					abutton.position = CGPoint(x: self.board.tiles[i][4].position.x + (self.board.tiles[i][4].frame.width / 2),
+											  y: self.board.tiles[i][4].frame.origin.y - self.board.tiles[i][4].frame.height)
+					actionButtons.append(abutton)
+					self.addChild(abutton)
+				default:
+					return
 				}
 			}
+		}
+	}
+	
+	func applyActions() {
+		let playerCopies = players.map { (player) -> Player in
+			let copy: Player = player.copy()
+			for action in player.actions {
+				copy.addAction(action)
+			}
+			return copy
+		}
+		for i in 0..<MAX_ACTIONS {
+			let movePlayers = playerCopies.filter { $0.actions[i].type == .move }
+			let atkPlayers = playerCopies.filter { $0.actions[i].type == .attack }
+			for player in movePlayers {
+				player.position = player.actions[i].direction.move(player.position, player.moveDistance)
+			}
+			for player in atkPlayers {
+				let atkPosition = player.actions[i].direction.move(player.position, player.moveDistance)
+				for atkdPlayer in playerCopies {
+					print(players.filter { $0.gladiator == atkdPlayer.gladiator }[0].gladiator)
+					if atkdPlayer.position == atkPosition {
+						// add attacked action to player
+						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].actions.insert(Action(.attacked, player.actions[i].direction), at: i * 2 + 1)
+					} else {
+						// add dodge action to player
+						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].actions.insert(Action(.dodge, player.actions[i].direction), at: i * 2 + 1)
+					}
+				}
+			}
+		}
+		for player in players {
+			player.run(player.animations())
+			player.clearActions()
 		}
 	}
 	
