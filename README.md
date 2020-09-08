@@ -12,7 +12,7 @@ Each player is randomly assigned a gladiator and their corresponding deck of act
 
 **CURRENT ANIMATED GLADIATORS:**
 
-![axe player](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/axe.imageset/axe.png) ![knight player](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/knight.imageset/knight.png)
+![archer player](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/archer_idle.spriteatlas/archer_idle_0.imageset/archer_idle_0.png) ![axe player](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/axe_idle.spriteatlas/axe_idle_0.imageset/axe_idle_0.png) ![knight player](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/knight_idle.spriteatlas/knight_idle_0.imageset/knight_idle_0.png)
 
 **SELECT ACTIONS**: For every turn, each player will have 4 actions to choose from. Actions include movement, attack, or varying special moves/attacks. The player will select 3 actions to take, in sequential order, and select the direction to take each said action.
 
