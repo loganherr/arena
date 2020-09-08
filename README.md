@@ -1,6 +1,6 @@
 ![# ARENA](https://github.com/loganherr/arena/blob/master/arena/Assets.xcassets/title.spriteatlas/arena_0.imageset/arena_0.png)
 
-Welcome to ARENA! Think three moves ahead to outsmart, outmaneuver, and outlive the competition to be the last standing gladiator.
+Welcome to ARENA! Think three moves ahead to outsmart, outmaneuver, and outlive the competition to be the last gladiator standing.
 
 ARENA is a mix of deck-based, turn-based, RTS. Players selects 3 actions to take from a set hand of actions. Each player's then actions simultaneously take place, moving around the board and attacking those who come within range.
 
