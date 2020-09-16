@@ -10,7 +10,7 @@ import SpriteKit
 
 let PLAYER_HAND_SIZE = 4
 let FRAME_DURATION = 0.25
-let ANIMATION_DURATION = 1.0
+let ANIMATION_DURATION = 2.0
 
 class Player: SKSpriteNode {
 	enum type {
@@ -24,6 +24,7 @@ class Player: SKSpriteNode {
 	let runKey: String
 	var spriteAnimation: [SKTexture]
 	var attackAnimation: [SKTexture]
+	var attackedAnimation: [SKTexture]
 	var actions: [Action]
 	var reactions: [Reaction] = []
 	private var actionDeck: [ActionType] = []
@@ -44,6 +45,11 @@ class Player: SKSpriteNode {
 		attackAnimation = []
 		for i in 0..<atlas.textureNames.count {
 			attackAnimation.append(atlas.textureNamed("\(gladiator)_attack_\(i)"))
+		}
+		atlas = SKTextureAtlas(named: "\(gladiator)_attacked")
+		attackedAnimation = []
+		for i in 0..<atlas.textureNames.count {
+			attackedAnimation.append(atlas.textureNamed("\(gladiator)_attacked_\(i)"))
 		}
 		self.moveDistance = moveDistance
 		actions = []
@@ -96,27 +102,28 @@ class Player: SKSpriteNode {
 		var point = self.position
 		for i in 0..<self.actions.count {
 			var group: [SKAction] = []
+			var sequence: [SKAction] = []
 			if let turn = face(actions[i].direction) { group.append(turn) }
 			group.append(SKAction.wait(forDuration: ANIMATION_DURATION))
 			switch actions[i].type {
 			case .move:
 				point = actions[i].direction.move(point, self.moveDistance)
-				group.append(SKAction.move(to: point, duration: FRAME_DURATION))
+				sequence.append(SKAction.move(to: point, duration: FRAME_DURATION))
 			case .attack:
-				group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION))
-//			case .attacked:
-//				group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION / 4))
-//			default:
-//				break
+				sequence.append(SKAction.wait(forDuration: FRAME_DURATION))
+				sequence.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION))
 			}
 			if reactions.count > 0 {
-				switch reactions[i].type {
+				switch reactions[i] {
 				case .attacked:
-					group.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION / 4))
+					sequence.append(SKAction.animate(with: attackedAnimation, timePerFrame: FRAME_DURATION / 2))
+				case .dodge:
+					sequence.append(SKAction.animate(with: [spriteAnimation[0], spriteAnimation[1]], timePerFrame: FRAME_DURATION))
 				default:
 					break
 				}
 			}
+			group.append(SKAction.sequence(sequence))
 			animations.append(SKAction.group(group))
 		}
 		return SKAction.sequence(animations)
@@ -128,7 +135,7 @@ class Player: SKSpriteNode {
 	
 	func addReaction(_ reaction: Reaction) {
 		if actions.count > reactions.count { reactions.append(reaction) }
-		else if (reactions.last?.type == .dodge && reaction.type == .attacked) {
+		else if (reactions.last == .dodge && reaction == .attacked) {
 			reactions.removeLast()
 			reactions.append(reaction)
 		}

@@ -118,7 +118,6 @@ class LocalScene: SKScene {
 			} else {
 				let gladiator = availableGladiators.randomElement()!
 				let player = Player(gladiator: gladiator, moveDistance: board.tiles[0][0].frame.height, type: .human)
-				player.setPlayerActive(true)
 				player.position = startPositions[players.count]
 				players.append(player)
 				addChild(player)
@@ -138,10 +137,12 @@ class LocalScene: SKScene {
 			// then reset turn counter and start turns again
 		} else if activePlayer.actions.count == MAX_ACTIONS {
 			// activePlayer's turn is done
+			activePlayer.setPlayerActive(false)
 			clearForNextTurn()
 			turn += 1
 			takeTurn()
 		} else if activePlayer.actions.count == 0 {
+			activePlayer.setPlayerActive(true)
 			// activePlayer needs to select another action
 			// display activePlayer's actions if not already displayed
 			(0..<PLAYER_HAND_SIZE).forEach { (i) in
@@ -164,8 +165,6 @@ class LocalScene: SKScene {
 											  y: self.board.tiles[i][4].frame.origin.y - self.board.tiles[i][4].frame.height)
 					actionButtons.append(abutton)
 					self.addChild(abutton)
-				default:
-					return
 				}
 			}
 		}
@@ -174,33 +173,26 @@ class LocalScene: SKScene {
 	func applyActions() {
 		let playerCopies = players.map { (player) -> Player in
 			let copy: Player = player.copy()
-			for action in player.actions {
-				copy.addAction(action)
-			}
+			copy.actions = player.actions
 			return copy
 		}
 		for i in 0..<MAX_ACTIONS {
 			let movePlayers = playerCopies.filter { $0.actions[i].type == .move }
 			let atkPlayers = playerCopies.filter { $0.actions[i].type == .attack }
 			for player in movePlayers {
-				player.position = player.actions[i].direction.move(player.position, player.moveDistance)
+				playerCopies.filter { $0.gladiator == player.gladiator }[0].position = player.actions[i].direction.move(player.position, player.moveDistance)
 			}
-			for player in atkPlayers {
-				let atkPosition = player.actions[i].direction.move(player.position, player.moveDistance)
-				for atkdPlayer in playerCopies {
-					print(players.filter { $0.gladiator == atkdPlayer.gladiator }[0].gladiator)
-					if atkdPlayer.position == atkPosition {
-						// add attacked action to player
-						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(Reaction(.attacked))//(Action(.attacked, player.actions[i].direction), at: i * 2 + 1)
-					} else {
-						// add dodge action to player
-						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(Reaction(.dodge))//.actions.insert(Action(.dodge, player.actions[i].direction), at: i * 2 + 1)
-					}
+			for atkdPlayer in playerCopies {
+				players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(.dodge)
+				for player in atkPlayers {
+					let atkPosition = player.actions[i].direction.move(player.position, player.moveDistance)
+					players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(atkdPlayer.position == atkPosition ? .attacked : .dodge)
 				}
 			}
 		}
 		for player in players {
-			player.run(player.animations())
+			let animations = player.animations()
+			player.run(animations)
 			player.clearActions()
 			player.clearReactions()
 		}

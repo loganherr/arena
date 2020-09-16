@@ -6,17 +6,7 @@
 //  Copyright © 2020 Logan. All rights reserved.
 //
 
-import SpriteKit
-
-struct Reaction {
-	let type: ReactionType
-	
-	init(_ reaction: ReactionType) {
-		type = reaction
-	}
-}
-
-enum ReactionType {
+enum Reaction {
 	case dodge
 	case attacked
 	case die
