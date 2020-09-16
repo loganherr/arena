@@ -133,7 +133,6 @@ class LocalScene: SKScene {
 			applyActions()
 			turn = 0
 			clearForNextTurn()
-			takeTurn()
 			// then reset turn counter and start turns again
 		} else if activePlayer.actions.count == MAX_ACTIONS {
 			// activePlayer's turn is done
@@ -186,15 +185,22 @@ class LocalScene: SKScene {
 				players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(.dodge)
 				for player in atkPlayers {
 					let atkPosition = player.actions[i].direction.move(player.position, player.moveDistance)
-					players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(atkdPlayer.position == atkPosition ? .attacked : .dodge)
+					if checkIfAttackHit(atkdPlayer.position, atkPosition) {
+						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].addReaction(.attacked)
+						players.filter { $0.gladiator == atkdPlayer.gladiator }[0].loseHealth()
+					}
 				}
 			}
 		}
-		for player in players {
+		for (index, player) in players.enumerated() {
 			let animations = player.animations()
-			player.run(animations)
 			player.clearActions()
 			player.clearReactions()
+			player.run(animations) {
+				if index == self.players.endIndex - 1 {
+					self.takeTurn()
+				}
+			}
 		}
 	}
 	
@@ -260,5 +266,16 @@ class LocalScene: SKScene {
 		attackMarks.append(attackMark)
 		addChild(attackMark)
 		attackMark.run(SKAction.move(to: direction.move(attackMark.position, activePlayer.moveDistance), duration: 0.25))
+	}
+	
+	func checkIfAttackHit(_ pointA: CGPoint, _ pointB: CGPoint) -> Bool {
+		let hitRange = -2.0...2.0
+		let xDelta = pointA.x - pointB.x
+		let yDelta = pointA.y - pointB.y
+		if hitRange ~= Double(xDelta) && hitRange ~= Double(yDelta) {
+			return true
+		} else {
+			return false
+		}
 	}
 }

@@ -9,8 +9,9 @@
 import SpriteKit
 
 let PLAYER_HAND_SIZE = 4
-let FRAME_DURATION = 0.25
-let ANIMATION_DURATION = 2.0
+let FRAME_DURATION = 0.2
+let RFRAME_DURATION = 0.2
+let ANIMATION_DURATION = 1.8
 
 class Player: SKSpriteNode {
 	enum type {
@@ -110,16 +111,15 @@ class Player: SKSpriteNode {
 				point = actions[i].direction.move(point, self.moveDistance)
 				sequence.append(SKAction.move(to: point, duration: FRAME_DURATION))
 			case .attack:
-				sequence.append(SKAction.wait(forDuration: FRAME_DURATION))
 				sequence.append(SKAction.animate(with: attackAnimation, timePerFrame: FRAME_DURATION))
 			}
 			if reactions.count > 0 {
 				switch reactions[i] {
 				case .attacked:
-					sequence.append(SKAction.animate(with: attackedAnimation, timePerFrame: FRAME_DURATION / 2))
+					sequence.append(SKAction.animate(with: attackedAnimation, timePerFrame: RFRAME_DURATION))
 				case .dodge:
-					sequence.append(SKAction.animate(with: [spriteAnimation[0], spriteAnimation[1]], timePerFrame: FRAME_DURATION))
-				default:
+					sequence.append(SKAction.animate(with: spriteAnimation, timePerFrame: RFRAME_DURATION))
+				case .die:
 					break
 				}
 			}
@@ -127,6 +127,13 @@ class Player: SKSpriteNode {
 			animations.append(SKAction.group(group))
 		}
 		return SKAction.sequence(animations)
+	}
+	
+	func loseHealth() {
+		health -= 1
+		if health == 0 {
+			addReaction(.die)
+		}
 	}
 	
 	func addAction(_ action: Action) { actions.append(action) }
